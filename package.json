@@ -1,0 +1,16 @@
+{
+  "name": "pinpad",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Pinpad — pinpad.trade",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "serve": "node scripts/serve.mjs",
+    "verify": "node scripts/verify.mjs"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "sharp": "^0.33.5"
+  }
+}

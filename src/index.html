@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pinpad — a live Solana board</title>
+<meta name="description" content="Pinpad watches the loudest tokens on Solana in real time and pins its own line above them.">
+<meta property="og:title" content="Pinpad">
+<meta property="og:description" content="Nine keys. One key glows.">
+<meta property="og:image" content="assets/og.jpg">
+<meta property="og:url" content="https://pinpad.trade/">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/main.css">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body>
+<div class="progress" id="progress" aria-hidden="true"></div>
+
+<div class="intro" id="intro" aria-hidden="true">
+  <div class="intro-stage">
+    <img class="intro-mark" src="assets/logo.png" width="96" height="96" alt="">
+    <div class="intro-word" id="intro-word" data-text="Pinpad"></div>
+    <span class="intro-sub">Keys ready</span>
+  </div>
+</div>
+
+<header class="top" id="top">
+  <div class="topbar">
+    <div class="wrap topbar-in">
+      <a class="brandmark" href="#hero" aria-label="Pinpad home">
+        <img src="assets/logo.png" width="30" height="30" alt="Pinpad logo" id="brand-logo">
+        <span class="wordmark">Pin<span>pad</span></span>
+      </a>
+      <nav class="nav" aria-label="Main">
+        <a href="#market">Board</a><a href="#about">About</a><a href="#roadmap">Roadmap</a><a href="#links">Links</a>
+        <span class="nav-pad" id="nav-pad" aria-hidden="true"></span>
+      </nav>
+      <div class="topbar-actions" id="socials"></div>
+    </div>
+  </div>
+  <div class="ca-band"><div class="wrap" id="ca-slot"></div></div>
+</header>
+
+<main id="main">
+  <div class="ff-stage" id="hero">
+    <div class="ff-bleed" aria-hidden="true">
+      <canvas class="ff-canvas" id="mesh"></canvas>
+      <div class="grid-fade"></div>
+      <span class="star s1" data-depth="1.2"></span><span class="star s2" data-depth="0.8"></span><span class="star s3" data-depth="1.6"></span><span class="star s4" data-depth="1"></span>
+    </div>
+    <section class="wrap hero">
+      <div class="hero-stack">
+        <span class="eyebrow" data-reveal style="--i:0"><span class="eyebrow-chain" id="hero-chain"></span><span class="status-pill" id="status-pill" data-state="loading"><i></i><b>Syncing</b></span></span>
+        <h1 class="hero-title" data-depth="0.25">
+          <span class="ht-line"><span class="ht-soft" style="--l:0">Nine keys.</span></span>
+          <span class="ht-line"><span class="ht-pop" style="--l:1">One key glows.</span></span>
+        </h1>
+        <p class="lead" data-reveal style="--i:2">Pinpad follows the loudest tokens on Solana as they move and keeps its own line pinned above them, ready for the second its address goes public.</p>
+        <div class="cta" data-reveal style="--i:3" id="hero-cta"></div>
+      </div>
+    </section>
+
+    <section class="wrap ticker-wrap" aria-label="Live ticker" data-reveal style="--i:1">
+      <div class="tr-viewport"><div class="tr-track" id="ticker"></div></div>
+    </section>
+  </div>
+
+  <section class="wrap section" id="market">
+    <div class="list-head">
+      <div class="u-tabs" role="tablist" aria-label="Board order" id="tabs">
+        <button type="button" role="tab" id="tab-boosted" aria-selected="true" data-sort="boosted">Boosted</button>
+        <button type="button" role="tab" id="tab-gainers" aria-selected="false" data-sort="gainers">Gainers</button>
+        <button type="button" role="tab" id="tab-volume" aria-selected="false" data-sort="volume">Volume</button>
+        <button type="button" role="tab" id="tab-depth" aria-selected="false" data-sort="depth">Depth</button>
+      </div>
+      <span class="status-pill" id="status-pill-2" data-state="loading"><i></i><b>Syncing</b></span>
+    </div>
+    <div class="board-tools">
+      <div class="bt-sorts" role="group" aria-label="Filter" id="filters">
+        <button type="button" class="bt-chip" aria-pressed="true" data-filter="all">All</button>
+        <button type="button" class="bt-chip" aria-pressed="false" data-filter="up">Rising</button>
+        <button type="button" class="bt-chip" aria-pressed="false" data-filter="down">Falling</button>
+      </div>
+      <div class="bt-right">
+        <div class="bt-view" role="group" aria-label="Layout" id="views">
+          <button type="button" aria-pressed="true" data-view="list" aria-label="Rows"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 4h12M2 8h12M2 12h12"/></svg></button>
+          <button type="button" aria-pressed="false" data-view="tiles" aria-label="Tiles"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="2" width="5" height="5" rx="1.4"/><rect x="9" y="2" width="5" height="5" rx="1.4"/><rect x="2" y="9" width="5" height="5" rx="1.4"/><rect x="9" y="9" width="5" height="5" rx="1.4"/></svg></button>
+        </div>
+      </div>
+    </div>
+    <p class="feed-note" id="feed-note" role="status" hidden></p>
+    <div id="board-panel" role="tabpanel" aria-labelledby="tab-boosted">
+      <div class="cols" id="cols" aria-hidden="true"><span></span><span>Token</span><span>Price</span><span>24h</span><span>Volume</span><span>Liquidity</span></div>
+      <div class="board view-list" id="board"></div>
+    </div>
+  </section>
+
+  <section class="wrap section" id="about">
+    <div class="sec-head" data-reveal><h2>Built around a keypad</h2><p class="lead">Three small moves, each one visible on this page.</p></div>
+    <div class="cards3">
+      <article class="card spot" data-reveal style="--i:0"><span class="card-n">01</span><h3>Read</h3><p>Ten boosted Solana tokens stream in with price, swing, turnover and depth, refreshed each minute while you keep watching.</p></article>
+      <article class="card spot" data-reveal style="--i:1"><span class="card-n">02</span><h3>Pin</h3><p>Our own line sits first on the board. Until an address is published it shows a dormant key, afterwards it fills with real numbers.</p></article>
+      <article class="card spot" data-reveal style="--i:2"><span class="card-n">03</span><h3>Verify</h3><p>The bar pinned at the very top carries the single address that counts. Tap once to copy, then check it against a block explorer of your choice.</p></article>
+    </div>
+    <div class="feats">
+      <div class="feat spot" data-reveal style="--i:0"><b>Always streaming</b><span>Polling pauses when the tab sleeps and resumes the instant you return.</span></div>
+      <div class="feat spot" data-reveal style="--i:1"><b>Forgiving feed</b><span>When a source stumbles, the last good numbers stay on screen while retries widen.</span></div>
+      <div class="feat spot" data-reveal style="--i:2"><b>Wallet-free</b><span>Nothing here asks you to connect, sign or approve anything.</span></div>
+      <div class="feat spot" data-reveal style="--i:3"><b>Calm motion</b><span>Every animation steps aside when your system asks for reduced movement.</span></div>
+    </div>
+  </section>
+
+  <section class="wrap section" id="roadmap">
+    <div class="sec-head" data-reveal><h2>The route ahead</h2><p class="lead">Four stages, no calendar attached.</p></div>
+    <div class="phases">
+      <article class="phase spot" data-reveal style="--i:0"><span class="chip-p">pending</span><h3>Foundation</h3><ul><li>Brand kit locked in</li><li>Live board wired to Solana</li><li>Address bar armed</li></ul></article>
+      <article class="phase spot" data-reveal style="--i:1"><span class="chip-p">pending</span><h3>Ignition</h3><ul><li>Contract published</li><li>Own line lights up</li><li>Community rooms open</li></ul></article>
+      <article class="phase spot" data-reveal style="--i:2"><span class="chip-p">pending</span><h3>Expansion</h3><ul><li>Personal watchlists</li><li>Movement alerts</li><li>Richer charting</li></ul></article>
+      <article class="phase spot" data-reveal style="--i:3"><span class="chip-p">pending</span><h3>Horizon</h3><ul><li>Public source tree</li><li>Partner hookups</li><li>Holder-led proposals</li></ul></article>
+    </div>
+  </section>
+
+  <section class="wrap section" id="links">
+    <div class="sec-head" data-reveal><h2>Find us</h2><p class="lead">Each fact below is either confirmed or marked pending, nothing in between.</p></div>
+    <div class="chips" id="chips"></div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap" style="display:block">
+    <div class="foot-main">
+      <div class="foot-brand">
+        <span class="fb-name"><img src="assets/logo.png" width="26" height="26" alt=""> Pinpad</span>
+        <p>A Solana board with a keypad for a heart. Watch the crowd, keep an eye on the lit key.</p>
+      </div>
+      <nav class="foot-col" aria-label="Sections"><b>Sections</b><a href="#market">Board</a><a href="#about">About</a><a href="#roadmap">Roadmap</a><a href="#links">Links</a></nav>
+      <nav class="foot-col" aria-label="Network" id="foot-net"><b>Network</b></nav>
+      <nav class="foot-col" aria-label="Community" id="foot-com"><b>Community</b></nav>
+    </div>
+    <div class="foot-base"><span>© PINPAD</span><span id="foot-social"></span></div>
+    <p class="foot-legal">Pinpad is an informational page and nothing more: no custody of funds, no signing of transactions, no advice of any kind. Boards list tokens that third parties boosted, which implies no endorsement. Digital assets swing hard and can drop to nothing. Verify every address yourself before you act.</p>
+  </div>
+</footer>
+
+<nav class="dock" aria-label="Quick">
+  <a href="#market"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 19V9M10 19V5M16 19v-7M21 19H3"/></svg><span>Board</span></a>
+  <a href="#about"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="6" height="6" rx="1.6"/><rect x="14" y="4" width="6" height="6" rx="1.6"/><rect x="4" y="14" width="6" height="6" rx="1.6"/><rect x="14" y="14" width="6" height="6" rx="1.6"/></svg><span>About</span></a>
+  <a href="#roadmap"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 19c0-6 14-2 14-8V5M5 5v.01"/></svg><span>Route</span></a>
+  <a href="#links"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M10 14a4 4 0 0 0 6 0l3-3a4 4 0 0 0-6-6l-1 1M14 10a4 4 0 0 0-6 0l-3 3a4 4 0 0 0 6 6l1-1"/></svg><span>Links</span></a>
+</nav>
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

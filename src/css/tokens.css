@@ -1,0 +1,65 @@
+/*
+  tokens.css — the ONLY file allowed to hold colour literals (hex / rgb / named).
+  Provenance (all sampled from brand assets by scripts/sample.mjs, 2000x2000 logo, sRGB):
+    --bg        #0a0a0f  specified by the project brief (near-black page field; logo field was #131418)
+    --ink       #f2f1f3  brand/LOGO PINPAD PNG.png  px(860,860)                   — key face
+    --shade     #cccccf  brand/LOGO PINPAD PNG.png  px(1000,1370)                 — frame underside
+    --accent    #7c3aed  specified by the project brief (violet; logo lit key sampled as #9948fd)
+    --up        #22c55e  specified by the project brief (gains)
+    --down      #ef4444  specified by the project brief (losses)
+    --banner-bg #17181c  reference/SAMPUL PINPAD JPG.jpg.jpeg px(100,100)         — banner field
+    --mint      #00ffcc  specified by the project brief for the own-token pulse (not sampled)
+  Everything else is derived with color-mix() from these.
+*/
+:root {
+  --bg: #0a0a0f;
+  --ink: #f2f1f3;
+  --shade: #cccccf;
+  --accent: #7c3aed;
+  --banner-bg: #17181c;
+  --mint: #00ffcc;
+  --void: black;
+
+  --color-accent: var(--accent);
+
+  --surface: color-mix(in srgb, var(--ink) 5%, var(--bg));
+  --surface-2: color-mix(in srgb, var(--ink) 8%, var(--bg));
+  --surface-3: color-mix(in srgb, var(--ink) 13%, var(--bg));
+  --line: color-mix(in srgb, var(--ink) 8%, transparent);
+  --line-strong: color-mix(in srgb, var(--ink) 15%, transparent);
+  --text: var(--ink);
+  --muted: color-mix(in srgb, var(--ink) 58%, var(--bg));
+  --faint: color-mix(in srgb, var(--ink) 40%, var(--bg));
+  --c1: color-mix(in srgb, var(--ink) 86%, var(--bg));
+  --c2: color-mix(in srgb, var(--ink) 62%, var(--bg));
+  --c3: color-mix(in srgb, var(--ink) 42%, var(--bg));
+  --hair: color-mix(in srgb, var(--ink) 5.5%, var(--bg));
+  --l1: color-mix(in srgb, var(--ink) 2.4%, transparent);
+  --l2: color-mix(in srgb, var(--ink) 4.5%, transparent);
+  --up: #22c55e;
+  --down: #ef4444;
+  --scrim: color-mix(in srgb, var(--void) 55%, transparent);
+  --scrim-strong: color-mix(in srgb, var(--void) 82%, transparent);
+  --glow: color-mix(in srgb, var(--accent) 34%, transparent);
+  --pop-soft: color-mix(in srgb, var(--accent) 14%, var(--surface));
+
+  /* radii — reference: 10 / 16 / 24, tiles 16-18, chips 999 */
+  --radius-sm: 10px;
+  --radius: 16px;
+  --radius-lg: 24px;
+  --pill: 999px;
+
+  /* motion — reference easings and durations */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-ui: cubic-bezier(0.22, 1, 0.36, 1);
+  --spring: cubic-bezier(0.16, 1, 0.3, 1);
+  --rise: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --dur-press: 120ms;
+  --dur-quick: 200ms;
+  --dur-card: 320ms;
+
+  --font-ui: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+  --gutter: max(16px, env(safe-area-inset-left, 0px));
+  --gutter-r: max(16px, env(safe-area-inset-right, 0px));
+}
